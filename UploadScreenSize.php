@@ -29,18 +29,7 @@ function getScreenDetailsInsertQuery($database, $deviceInformationId, $isPortrai
 {
 
 	include 'Constants.php';
-
-	$devicePixelHeight = $database->escape_string($screenDetails[$REQUEST_DEVICE_PIXEL_HEIGHT_KEY]);
-	$devicePixelWidth = $database->escape_string($screenDetails[$REQUEST_DEVICE_PIXEL_WIDTH_KEY]);
-	$windowPixelHeight = $database->escape_string($screenDetails[$REQUEST_WINDOW_PIXEL_HEIGHT_KEY]);
-	$windowPixelWidth = $database->escape_string($screenDetails[$REQUEST_WINDOW_PIXEL_WIDTH_KEY]);
-	$contentViewPixelHeight = $database->escape_string($screenDetails[$REQUEST_CONTENT_VIEW_PIXEL_HEIGHT_KEY]);
-	$contentViewPixelWidth = $database->escape_string($screenDetails[$REQUEST_CONTENT_VIEW_PIXEL_WIDTH_KEY]);
-	$navBarHeight = $database->escape_string($screenDetails[$REQUEST_NAV_BAR_HEIGHT_KEY]);
-	$navBarWidth = $database->escape_string($screenDetails[$REQUEST_NAV_BAR_WIDTH_KEY]);
-	$statusBarHeight = $database->escape_string($screenDetails[$REQUEST_STATUS_BAR_HEIGHT_KEY]);
-	$titleBarHeight = $database->escape_string($screenDetails[$REQUEST_TITLE_BAR_HEIGHT_KEY]);
-
+	include 'ExtractScreenSize.php';
 
 	$insertDeviceInformation =  "INSERT INTO $TABLE_NAME_SCREEN_DETAILS (" .
 	"$TABLE_COLUMN_NAME_DEVICE_INFORMATION_ID, " .
@@ -113,38 +102,10 @@ isScreenDetailsSet($json[$REQUEST_PORTRAIT_SCREEN_DETAILS_KEY]) &&
 isScreenDetailsSet($json[$REQUEST_LANDSCAPE_SCREEN_DETAILS_KEY])
 ) {
 	$database = new mysqli($URL, $USER_NAME, $PASSWORD, $DATABASE);
-
 	$portraitScreenDetails = $json[$REQUEST_PORTRAIT_SCREEN_DETAILS_KEY];
 	$landscapeScreenDetails = $json[$REQUEST_LANDSCAPE_SCREEN_DETAILS_KEY];
-	$versionCodeName = $json[$REQUEST_VERSION_CODE_NAME_KEY];
-	$versionIncremental = $json[$REQUEST_VERSION_INCREMENTAL_KEY];
-	$versionRelease = $database->escape_string($json[$REQUEST_VERSION_RELEASE_KEY]);
-	$versionSdkString = $database->escape_string($json[$REQUEST_VERSION_SDK_STRING_KEY]);
-	$versionSdkInteger = $database->escape_string($json[$REQUEST_VERSION_SDK_INTEGER_KEY]);
-	$board =$database->escape_string( $json[$REQUEST_BOARD_KEY]);
-	$bootLoader = $database->escape_string($json[$REQUEST_BOOT_LOADER_KEY]);
-	$brand = $database->escape_string($json[$REQUEST_BRAND_KEY]);
-	$cpuAbi = $database->escape_string($json[$REQUEST_CPU_ABI_KEY]);
-	$cpuAbi2 = $database->escape_string($json[$REQUEST_CPU_ABI_2_KEY]);
-	$device = $database->escape_string($json[$REQUEST_DEVICE_KEY]);
-	$display = $database->escape_string($json[$REQUEST_DISPLAY_KEY]);
-	$fingerPrint = $database->escape_string($json[$REQUEST_FINGER_PRINT_KEY]);
-	$hardwade = $database->escape_string($json[$REQUEST_HARDWARE_KEY]);
-	$host = $database->escape_string($json[$REQUEST_HOST_KEY]);
-	$deviceId = $database->escape_string($json[$REQUEST_DEVICE_ID_KEY]);
-	$manufacturer = $database->escape_string($json[$REQUEST_MANUFACTURER_KEY]);
-	$product = $database->escape_string($json[$REQUEST_PRODUCT_KEY]);
-	$radio = $database->escape_string($json[$REQUEST_RADIO_KEY]);
-	$tags = $database->escape_string($json[$REQUEST_TAGS_KEY]);
-	$time = $database->escape_string($json[$REQUEST_TIME_KEY]);
-	$type = $database->escape_string($json[$REQUEST_TYPE_KEY]);
-	$unkown = $database->escape_string($json[$REQUEST_UNKNOWN_KEY]);
-	$user = $database->escape_string($json[$REQUEST_USER_KEY]);
-	$densityName = $database->escape_string($json[$REQUEST_DENSITY_NAME_KEY]);
-	$screenSize = $database->escape_string($json[$REQUEST_SCREEN_SIZE_KEY]);
-	$density = $database->escape_string($json[$REQUEST_DENSITY_KEY]);
-	$xdpi = $database->escape_string($json[$REQUEST_XDPI_KEY]);
-	$ydpi = $database->escape_string($json[$REQUEST_YDPI_KEY]);
+
+	include 'ExtractDeviceInformation.php';
 
 	$insertDeviceInformation =  "INSERT INTO $TABLE_NAME_DEVICE_INFORMATION (" .
 	"$REQUEST_VERSION_CODE_NAME_KEY, " .
@@ -196,7 +157,7 @@ isScreenDetailsSet($json[$REQUEST_LANDSCAPE_SCREEN_DETAILS_KEY])
 	"'$deviceId', ".
 	"'$manufacturer', ".
 	"'$product', ".
-	"'$radio', ".
+	"'$radio', ". 
 	"'$tags', ".
 	"$time, ".
 	"'$type', ".
@@ -207,7 +168,7 @@ isScreenDetailsSet($json[$REQUEST_LANDSCAPE_SCREEN_DETAILS_KEY])
 	"$density, ".
 	"$xdpi, ".
 	"$ydpi, ".
-	"0 ".
+	"1 ".
 	");";
 
 
@@ -237,14 +198,14 @@ isScreenDetailsSet($json[$REQUEST_LANDSCAPE_SCREEN_DETAILS_KEY])
 	"$REQUEST_USER_KEY = '$user' AND " .
 	"$REQUEST_DENSITY_NAME_KEY = '$densityName' AND " .
 	"$REQUEST_SCREEN_SIZE_KEY = '$screenSize' AND " .
-//	"$REQUEST_TIME_KEY = '$time' AND " .
+	//	"$REQUEST_TIME_KEY = '$time' AND " .
 	"$REQUEST_DENSITY_KEY = $density ".
-	
+
 	";";
 
 	$queryResults = $database->query($queryDeviceInformation);
 	if ($row = $queryResults->fetch_assoc()){
-		$count = $row[$TABLE_COLUMN_NAME_COUNT]+1;
+		$count = $row[$TABLE_COLUMN_NAME_COUNT] + 1;
 		$deviceInofmationId = $row[$TABLE_COLUMN_NAME_DEVICE_INFORMATION_ID];
 		$insertCountIncrement = "UPDATE $TABLE_NAME_DEVICE_INFORMATION SET $TABLE_COLUMN_NAME_COUNT=$count WHERE $TABLE_COLUMN_NAME_DEVICE_INFORMATION_ID = $deviceInofmationId;";
 		$database->query($insertCountIncrement);
