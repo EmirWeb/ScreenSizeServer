@@ -28,4 +28,6 @@ $screenSize = $database->escape_string($json[$REQUEST_SCREEN_SIZE_KEY]);
 $density = $database->escape_string($json[$REQUEST_DENSITY_KEY]);
 $xdpi = $database->escape_string($json[$REQUEST_XDPI_KEY]);
 $ydpi = $database->escape_string($json[$REQUEST_YDPI_KEY]);
+$deviceName = $database->escape_string($json[$REQUEST_DEVICE_NAME_KEY]);
+
 ?>

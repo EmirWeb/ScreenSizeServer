@@ -96,6 +96,7 @@ isset($json[$REQUEST_SCREEN_SIZE_KEY]) &&
 isset($json[$REQUEST_DENSITY_KEY]) &&
 isset($json[$REQUEST_XDPI_KEY]) &&
 isset($json[$REQUEST_YDPI_KEY]) &&
+isset($json[$REQUEST_DEVICE_NAME_KEY]) &&
 is_array($json[$REQUEST_PORTRAIT_SCREEN_DETAILS_KEY]) &&
 is_array($json[$REQUEST_LANDSCAPE_SCREEN_DETAILS_KEY]) &&
 isScreenDetailsSet($json[$REQUEST_PORTRAIT_SCREEN_DETAILS_KEY]) &&
@@ -108,6 +109,7 @@ isScreenDetailsSet($json[$REQUEST_LANDSCAPE_SCREEN_DETAILS_KEY])
 	include 'ExtractDeviceInformation.php';
 
 	$insertDeviceInformation =  "INSERT INTO $TABLE_NAME_DEVICE_INFORMATION (" .
+	"$REQUEST_DEVICE_NAME_KEY, " .
 	"$REQUEST_VERSION_CODE_NAME_KEY, " .
 	"$REQUEST_VERSION_INCREMENTAL_KEY, " .
 	"$REQUEST_VERSION_RELEASE_KEY, " .
@@ -139,6 +141,7 @@ isScreenDetailsSet($json[$REQUEST_LANDSCAPE_SCREEN_DETAILS_KEY])
 	"$REQUEST_YDPI_KEY, " .
 	"$TABLE_COLUMN_NAME_COUNT " .
 	") VALUES (".
+	"'$deviceName', " .
 	"'$versionCodeName', ".
 	"'$versionIncremental', ".
 	"'$versionRelease', ".
@@ -173,6 +176,7 @@ isScreenDetailsSet($json[$REQUEST_LANDSCAPE_SCREEN_DETAILS_KEY])
 
 
 	$queryDeviceInformation =  "SELECT $TABLE_COLUMN_NAME_COUNT, $TABLE_COLUMN_NAME_DEVICE_INFORMATION_ID FROM $TABLE_NAME_DEVICE_INFORMATION WHERE " .
+	"$REQUEST_DEVICE_NAME_KEY = '$deviceName' AND " .
 	"$REQUEST_VERSION_CODE_NAME_KEY = '$versionCodeName' AND " .
 	"$REQUEST_VERSION_INCREMENTAL_KEY = '$versionIncremental' AND " .
 	"$REQUEST_VERSION_RELEASE_KEY = '$versionRelease' AND " .
@@ -200,9 +204,8 @@ isScreenDetailsSet($json[$REQUEST_LANDSCAPE_SCREEN_DETAILS_KEY])
 	"$REQUEST_SCREEN_SIZE_KEY = '$screenSize' AND " .
 	//	"$REQUEST_TIME_KEY = '$time' AND " .
 	"$REQUEST_DENSITY_KEY = $density ".
-
 	";";
-
+	
 	$queryResults = $database->query($queryDeviceInformation);
 	if ($row = $queryResults->fetch_assoc()){
 		$count = $row[$TABLE_COLUMN_NAME_COUNT] + 1;
