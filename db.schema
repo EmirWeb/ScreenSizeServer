@@ -54,4 +54,21 @@ CREATE TABLE screenDetails  (
 );
 
 
+DROP TABLE IF EXISTS deviceNames;
+CREATE TABLE deviceNames  (
+	deviceName VARCHAR(256),
+	canonicalName VARCHAR(256)
+);
 
+
+INSERT INTO deviceNames (deviceName, canonicalName) VALUES ('GT-I9100M', 'Samsung Galaxy S II');
+INSERT INTO deviceNames (deviceName, canonicalName) VALUES ('GT-I9500', 'Samsung Galaxy S 4');
+INSERT INTO deviceNames (deviceName, canonicalName) VALUES ('GT-N7100', 'Samsung Galaxy Note II');
+INSERT INTO deviceNames (deviceName, canonicalName) VALUES ('GT-P7500M', 'Samsung Galaxy Tab 10.1"');
+INSERT INTO deviceNames (deviceName, canonicalName) VALUES ('LG-E400', 'LG Optimus L3');
+INSERT INTO deviceNames (deviceName, canonicalName) VALUES ('SGH-I747M', 'Samsung Galaxy S III');
+INSERT INTO deviceNames (deviceName, canonicalName) VALUES ('SABRESD-MX6DQ', 'Zenithink C94');
+
+
+DROP VIEW IF EXISTS fullDeviceInformation;
+CREATE VIEW fullDeviceInformation AS SELECT * FROM deviceInformation  NATURAL LEFT JOIN deviceNames;

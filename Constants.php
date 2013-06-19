@@ -38,6 +38,7 @@ $REQUEST_XDPI_KEY = "xdpi";
 $REQUEST_YDPI_KEY = "ydpi";
 $REQUEST_COUNT_KEY = "ydpi";
 $REQUEST_DEVICE_NAME_KEY = "deviceName";
+$REQUEST_CANONICAL_NAME_KEY = "canonicalName";
 
 $REQUEST_DEVICE_PIXEL_HEIGHT_KEY = "devicePixelHeight";
 $REQUEST_DEVICE_PIXEL_WIDTH_KEY = "devicePixelWidth";
@@ -51,6 +52,7 @@ $REQUEST_STATUS_BAR_HEIGHT_KEY = "statusBarHeight";
 $REQUEST_TITLE_BAR_HEIGHT_KEY = "titleBarHeight";
 
 $TABLE_NAME_DEVICE_INFORMATION = "deviceInformation";
+$TABLE_NAME_FULL_DEVICE_INFORMATION = "fullDeviceInformation";
 $TABLE_NAME_SCREEN_DETAILS = "screenDetails";
 $TABLE_COLUMN_NAME_DEVICE_INFORMATION_ID = "deviceInformationId";
 $TABLE_COLUMN_NAME_SCREEN_SIZE_ID = "screenSizeId";
